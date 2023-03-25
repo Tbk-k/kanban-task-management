@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
+import Navbar from "./components/navbar/Navbar";
+import TaskList from "./components/taskList/TaskList";
 
-function App() {
+const Wrapper = styled.main`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme, isDarkTheme }) =>
+    isDarkTheme ? theme.colors.veryDarkGrey : theme.colors.lightGrey};
+`;
+
+const InnerWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+const App = () => {
+  const isDarkTheme = useSelector((state) => state.themeSlice.isDarkTheme);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Wrapper isDarkTheme={isDarkTheme}>
+      <Navbar />
+      <InnerWrapper>
+        <TaskList />
+      </InnerWrapper>
+    </Wrapper>
   );
-}
+};
 
 export default App;
