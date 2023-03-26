@@ -12,5 +12,6 @@ const themeSlice = createSlice({
   },
 });
 
-export const { setTheme } = themeSlice.actions;
-export default themeSlice.reducer;
+const { actions, reducer } = themeSlice;
+export const { setTheme } = actions;
+export default reducer;

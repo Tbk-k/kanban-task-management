@@ -38,7 +38,8 @@ export const AddBoard = styled.button`
 `;
 
 export const MenuItem = styled.li`
-  padding: 15px 70px 15px 25px;
+  padding: 15px 0px 15px 25px;
+  min-width: 250px;
   border-radius: 0 100px 100px 0;
   font: ${({ theme }) => theme.fonts.heading.m};
   display: flex;

@@ -1,8 +1,9 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Navbar from "./components/navbar/Navbar";
 import TaskList from "./components/taskList/TaskList";
+import { changeActiveBoard } from "./reducers/activeBoard";
 
 const Wrapper = styled.main`
   width: 100vw;
@@ -20,6 +21,12 @@ const InnerWrapper = styled.div`
 
 const App = () => {
   const isDarkTheme = useSelector((state) => state.themeSlice.isDarkTheme);
+  const dispatch = useDispatch();
+  const activeBoard = useSelector((state) => state.taskBoards[0]);
+
+  useEffect(() => {
+    dispatch(changeActiveBoard(activeBoard));
+  }, []);
 
   return (
     <Wrapper isDarkTheme={isDarkTheme}>

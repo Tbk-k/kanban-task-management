@@ -7,21 +7,26 @@ import { FiMoreVertical } from "react-icons/fi";
 import { FaChevronDown } from "react-icons/fa";
 import Backdrop from "../backdrop/Backdrop";
 import MobileMenu from "../mobileMenu/MobileMenu";
+import AddNewBoard from "../addNewBoard/AddNewBoard";
 
 const Navbar = () => {
   const isDarkTheme = useSelector((state) => state.themeSlice.isDarkTheme);
   const [isMenuShown, setMenuState] = useState(false);
+  const [showAddNewBaordForm, setAddNewBoardFormStatus] = useState(false);
+
+  const activeBoard = useSelector((state) => state.activeBoard);
 
   const handleMenuState = () => {
     setMenuState((prev) => !prev);
   };
+
   return (
     <>
       <StyledNavbar isDarkTheme={isDarkTheme}>
         <div>
           <MobileLogo />
           <h2>
-            New Board
+            {activeBoard.title || "New Board"}
             <FaChevronDown />
           </h2>
         </div>
@@ -35,7 +40,16 @@ const Navbar = () => {
       {isMenuShown && (
         <>
           <Backdrop onClick={handleMenuState} />
-          <MobileMenu />
+          <MobileMenu
+            setMenuState={setMenuState}
+            setAddNewBoardFormStatus={setAddNewBoardFormStatus}
+          />
+        </>
+      )}
+      {showAddNewBaordForm && (
+        <>
+          <Backdrop onClick={() => setAddNewBoardFormStatus(false)} />
+          <AddNewBoard />
         </>
       )}
     </>

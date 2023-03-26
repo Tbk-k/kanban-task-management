@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import themeSlice from "../reducers/themeSlice";
-import boardSlice from "../reducers/boardSlice";
+import taskBoards from "../reducers/taskBoards";
+import activeBoard from "../reducers/activeBoard";
 
 export const store = configureStore({
   reducer: {
     themeSlice,
-    boardSlice,
+    taskBoards,
+    activeBoard
   },
 });

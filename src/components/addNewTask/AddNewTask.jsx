@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import {
-  AddSubtaskBtn,
-  AddTaskForm,
-  CreateTask,
-  StatusSelect,
-  SubtaskWrapper,
-} from "./AddNewTask.styles";
 import Backdrop from "../backdrop/Backdrop";
 import { useSelector } from "react-redux";
 import { IoClose } from "react-icons/io5";
+import {
+  AddBtn,
+  FormGroupWrapper,
+  StyledForm,
+  StyledSelect,
+  SubmitBtn,
+} from "../../styles/FormTheme.styles";
 
 const AddNewTask = ({ handleAddTask }) => {
   const isDarkTheme = useSelector((state) => state.themeSlice.isDarkTheme);
@@ -24,9 +24,8 @@ const AddNewTask = ({ handleAddTask }) => {
   };
   return (
     <>
-      <AddTaskForm isDarkTheme={isDarkTheme}>
-        <h4>Add New Task</h4>
-        <label htmlFor="title">Title</label>
+      <StyledForm isDarkTheme={isDarkTheme}>
+        <h4>Add New Task</h4> <label htmlFor="title">Title</label>
         <input type="text" id="title" placeholder="e.g. Take coffee break" />
         <label htmlFor="desc">Description</label>
         <textarea
@@ -36,9 +35,8 @@ const AddNewTask = ({ handleAddTask }) => {
 a little."
         />
         <label htmlFor="subtasks">Subtasks</label>
-
         {subtasks?.map((props) => (
-          <SubtaskWrapper
+          <FormGroupWrapper
             isDarkTheme={isDarkTheme}
             key={props.id}
             id={props.id}
@@ -50,24 +48,23 @@ a little."
               required
             />
             <IoClose onClick={() => handleDeteleSubtask(props)} />
-          </SubtaskWrapper>
+          </FormGroupWrapper>
         ))}
-        <AddSubtaskBtn
+        <AddBtn
           type="button"
           isDarkTheme={isDarkTheme}
           onClick={handleAddSubtask}
         >
           + Add New Subtask
-        </AddSubtaskBtn>
+        </AddBtn>
         <label htmlFor="">Status</label>
-        <StatusSelect isDarkTheme={isDarkTheme}>
+        <StyledSelect isDarkTheme={isDarkTheme}>
           <option value="">Todo</option>
           <option value="">Doing</option>
           <option value="">Done</option>
-        </StatusSelect>
-        <CreateTask>Create Task</CreateTask>
-      </AddTaskForm>
-      ;
+        </StyledSelect>
+        <SubmitBtn>Create Task</SubmitBtn>
+      </StyledForm>
       <Backdrop onClick={handleAddTask} />
     </>
   );
