@@ -44,6 +44,7 @@ export const StyledNavbar = styled.nav`
         display: flex;
         justify-content: center;
         align-items: center;
+        opacity: ${({ isEmpty }) => isEmpty && 0.5};
         svg {
           fill: white;
           font-size: 18px;

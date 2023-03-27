@@ -6,18 +6,21 @@ import {
   SubmitBtn,
 } from "../../styles/FormTheme.styles";
 import { IoClose } from "react-icons/io5";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addBoard } from "../../reducers/taskBoards";
+import { resetModals } from "../../reducers/modalsSlice";
+import { changeActiveBoard } from "../../reducers/activeBoard";
 
 const AddNewBoard = () => {
   const initialState = {
     title: "New Board",
     columns: [
-      { id: 0, name: "Todo" },
-      { id: 1, name: "Doing" },
-      { id: 2, name: "Done" },
+      { id: 0, title: "Todo" },
+      { id: 1, title: "Doing" },
+      { id: 2, title: "Done" },
     ],
   };
+  const boards = useSelector((state) => state.taskBoards);
   const editedBoard = null;
   const [data, setData] = useState(editedBoard || initialState);
   const dispatch = useDispatch();
@@ -29,6 +32,8 @@ const AddNewBoard = () => {
   const handleChangeColumns = (e) => {
     const { id, value } = e.target;
     const columnId = parseInt(id);
+
+
 
     setData((prev) => ({
       ...prev,
@@ -58,9 +63,15 @@ const AddNewBoard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addBoard({ title: data.title }));
+    let newBoard = {
+      id: boards.length,
+      title: data.title,
+      columns: data.columns,
+    };
+    dispatch(addBoard(newBoard));
+    dispatch(changeActiveBoard(newBoard));
+    dispatch(resetModals());
   };
-
   return (
     <StyledForm onSubmit={handleSubmit}>
       <h4>Add New Board</h4>
@@ -92,5 +103,4 @@ const AddNewBoard = () => {
     </StyledForm>
   );
 };
-
 export default AddNewBoard;

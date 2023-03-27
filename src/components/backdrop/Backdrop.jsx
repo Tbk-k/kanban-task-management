@@ -1,5 +1,7 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { resetModals } from "../../reducers/modalsSlice";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -12,8 +14,15 @@ const Wrapper = styled.div`
   cursor: pointer;
 `;
 
-const Backdrop = ({ onClick }) => {
-  return <Wrapper onClick={onClick} />;
+const Backdrop = () => {
+  const dispatch = useDispatch();
+  return (
+    <Wrapper
+      onClick={() => {
+        dispatch(resetModals());
+      }}
+    />
+  );
 };
 
 export default Backdrop;
