@@ -2,9 +2,12 @@ import styled from "styled-components";
 
 export const TaskListWrapper = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: ${({ isEmptyBoard }) => isEmptyBoard && "center"};
+  align-items: ${({ isEmptyBoard }) => isEmptyBoard && "center"};
+  gap: ${({ isEmptyBoard }) => !isEmptyBoard && "24px"};
+  padding: ${({ isEmptyBoard }) => !isEmptyBoard && "24px 0 0 28px"};
   height: 100%;
+  overflow-x: scroll;
 `;
 
 export const StyledEmptyMessage = styled.div`

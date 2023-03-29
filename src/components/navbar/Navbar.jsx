@@ -5,21 +5,18 @@ import { ReactComponent as MobileLogo } from "../../img/logo-mobile.svg";
 import { GoPlus } from "react-icons/go";
 import { FiMoreVertical } from "react-icons/fi";
 import { FaChevronDown } from "react-icons/fa";
-import { toggleAddNewTask, toggleBoardMenu } from "../../reducers/modalsSlice";
+import { toggleBoardMenu, toggleTaskForm } from "../../reducers/modalsSlice";
 
-const Navbar = () => {
+const Navbar = ({ isEmptyBoard }) => {
   const isDarkTheme = useSelector((state) => state.themeSlice.isDarkTheme);
   const activeBoard = useSelector((state) => state.activeBoard);
   const dispatch = useDispatch();
-  let boardIsEmpty = activeBoard.columns.length === 0;
-
   const handleAddNewTask = () => {
-    if (boardIsEmpty) return;
-    dispatch(toggleAddNewTask());
+    if (isEmptyBoard) return;
+    dispatch(toggleTaskForm());
   };
-
   return (
-    <StyledNavbar isDarkTheme={isDarkTheme} isEmpty={boardIsEmpty}>
+    <StyledNavbar isDarkTheme={isDarkTheme} isEmpty={isEmptyBoard}>
       <div>
         <MobileLogo />
         <h2>

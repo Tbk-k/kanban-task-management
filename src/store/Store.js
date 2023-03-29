@@ -3,6 +3,7 @@ import themeSlice from "../reducers/themeSlice";
 import taskBoards from "../reducers/taskBoards";
 import activeBoard from "../reducers/activeBoard";
 import modalSlice from "../reducers/modalsSlice";
+import editSlice from "../reducers/editSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     taskBoards,
     activeBoard,
     modalSlice,
+    editSlice,
   },
 });

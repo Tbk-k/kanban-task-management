@@ -72,14 +72,14 @@ const taskBoards = createSlice({
     addBoard: (state, action) => {
       state.push(action.payload);
     },
-    addTask: (state, action) => {
-      const { id, newTask } = action.payload;
-      state[id].tasks.push(newTask);
+    handleTaskForm: (state, action) => {
+      const { boardId, columnId, task } = action.payload;
+      state[boardId].columns[columnId].tasks[task.id] = task;
     },
   },
 });
 
 const { actions, reducer } = taskBoards;
 
-export const { addBoard, addTask } = actions;
+export const { addBoard, handleTaskForm } = actions;
 export default reducer;

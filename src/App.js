@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Navbar from "./components/navbar/Navbar";
-import TaskList from "./components/taskList/TaskList";
+import TaskList from "./components/tasksList/TasksList";
 import { changeActiveBoard } from "./reducers/activeBoard";
 
 const Wrapper = styled.main`
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: ${({ theme, isDarkTheme }) =>
@@ -22,17 +22,29 @@ const InnerWrapper = styled.div`
 const App = () => {
   const isDarkTheme = useSelector((state) => state.themeSlice.isDarkTheme);
   const dispatch = useDispatch();
-  const activeBoard = useSelector((state) => state.taskBoards[0]);
+  const boards = useSelector((state) => state.taskBoards);
+  const activeBoard = useSelector((state) => state.activeBoard);
+  const [isEmptyBoard, setIsEmptyBoard] = useState(true);
 
   useEffect(() => {
-    dispatch(changeActiveBoard(activeBoard));
-  }, []);
+    const { id } = activeBoard;
+    if (!id) {
+      dispatch(changeActiveBoard(boards[0]));
+    } else {
+      dispatch(changeActiveBoard(boards[id]));
+    }
+  }, [dispatch, boards]);
+
+  useEffect(() => {
+    if (!activeBoard.columns) return;
+    setIsEmptyBoard(activeBoard.columns.length === 0);
+  }, [activeBoard]);
 
   return (
     <Wrapper isDarkTheme={isDarkTheme}>
-      <Navbar />
+      <Navbar isEmptyBoard={isEmptyBoard} />
       <InnerWrapper>
-        <TaskList />
+        <TaskList isEmptyBoard={isEmptyBoard} />
       </InnerWrapper>
     </Wrapper>
   );

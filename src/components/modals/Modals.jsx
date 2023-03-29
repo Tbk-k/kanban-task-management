@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Backdrop from "../backdrop/Backdrop";
 import MobileMenu from "../mobileMenu/MobileMenu";
 import AddNewBoard from "../addNewBoard/AddNewBoard";
-import AddNewTask from "../addNewTask/AddNewTask";
+import TaskForm from "../taskForm/TaskForm";
 
 const Modals = () => {
   const { boardMenu, addNewBoard, addNewTask } = useSelector(
@@ -28,7 +28,7 @@ const Modals = () => {
         {addNewTask && (
           <>
             <Backdrop />
-            <AddNewTask />
+            <TaskForm />
           </>
         )}
       </>
