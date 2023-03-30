@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoClose } from "react-icons/io5";
 import {
@@ -10,98 +10,102 @@ import {
 } from "../../styles/FormTheme.styles";
 import { handleTaskForm } from "../../reducers/taskBoards";
 import { resetModals } from "../../reducers/modalsSlice";
-import { setEditedTask } from "../../reducers/editSlice";
+import { setPreviousTask } from "../../reducers/previousSlice";
 
 const TaskForm = () => {
+  const dispatch = useDispatch();
   const isDarkTheme = useSelector((state) => state.themeSlice.isDarkTheme);
   const activeBoard = useSelector((state) => state.activeBoard);
-  const { columnId, taskId } = useSelector((state) => state.editSlice.task);
-  const dispatch = useDispatch();
+  const { columnId, taskId } = useSelector((state) => state.previousSlice.task);
+
   const [column, setColumn] = useState(0);
+  const [isEdited, setIsEdited] = useState(false);
+
   const initialTaskState = {
-    id: taskId || activeBoard.columns[0].tasks.length,
+    id: "",
     title: "",
     description: "",
-    subtasks: [{ id: "", title: "", completed: false }],
+    subtasks: [],
   };
-  const [createdTask, setCreatedTask] = useState(initialTaskState);
+  const [previousTaskState, setPreviousTaskState] = useState(initialTaskState);
 
   useEffect(() => {
     if (columnId != null && taskId != null) {
       const { id, title, description, subtasks } =
         activeBoard.columns[columnId].tasks[taskId];
-      setCreatedTask({ id, title, description, subtasks });
+      setIsEdited(true);
+      setPreviousTaskState({ id, title, description, subtasks });
       setColumn(columnId);
     }
-    return () => {
-      dispatch(setEditedTask({ columnId: null, taskId: null }));
-    };
   }, [columnId, taskId, activeBoard, dispatch]);
 
-  const handleChange = (e, subtaskId = null) => {
+  const handleChange = useCallback((e, subtaskId = null) => {
     const { name, value } = e.target;
     if (name === "subtask") {
-      setCreatedTask((prev) => ({
+      setPreviousTaskState((prev) => ({
         ...prev,
-        subtasks: prev.subtasks.map((subtask) => {
-          if (subtask.id === subtaskId.id) {
-            return { ...subtask, title: value };
-          } else {
-            return subtask;
-          }
-        }),
+        subtasks: prev.subtasks.map((subtask) =>
+          subtask.id === subtaskId.id ? { ...subtask, title: value } : subtask
+        ),
       }));
     } else {
-      setCreatedTask((prev) => ({ ...prev, [name]: value }));
+      setPreviousTaskState((prev) => ({ ...prev, [name]: value }));
     }
-  };
+  }, []);
 
-  const handleColumnChange = (e) => {
+  const handleColumnChange = useCallback((e) => {
     const { value } = e.target;
     setColumn(value);
-  };
+  }, []);
 
-  const addNewSubtask = () => {
-    setCreatedTask((prev) => ({
+  const addNewSubtask = useCallback(() => {
+    setPreviousTaskState((prev) => ({
       ...prev,
       subtasks: [
         ...prev.subtasks,
         { id: prev.subtasks.length, title: "", completed: false },
       ],
     }));
-  };
+  }, []);
 
-  const deleteSubtask = (e, index) => {
-    setCreatedTask((prev) => ({
+  const deleteSubtask = useCallback((index) => {
+    setPreviousTaskState((prev) => ({
       ...prev,
       subtasks: prev.subtasks.filter(({ id, ...props }) => id !== index),
     }));
-  };
+  }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { id } = activeBoard;
-    dispatch(
-      handleTaskForm({
-        boardId: id,
-        columnId: parseInt(column),
-        task: createdTask,
-      })
-    );
-    dispatch(resetModals());
-  };
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      const { id } = activeBoard;
+      const taskIndex = taskId || activeBoard.columns[column].tasks.length;
+      dispatch(
+        handleTaskForm({
+          boardId: id,
+          columnId: parseInt(column),
+          task: { ...previousTaskState, id: taskIndex },
+        })
+      );
+      dispatch(setPreviousTask({ columnId: null, taskId: null }));
+      dispatch(resetModals());
+    },
+    [activeBoard, column, previousTaskState, dispatch, taskId]
+  );
+
   return (
     <>
       <StyledForm isDarkTheme={isDarkTheme} onSubmit={handleSubmit}>
-        <h4>Add New Task</h4>
+        <h4>{isEdited ? "Edit task" : "Add New Task"}</h4>
         <label htmlFor="title">Title</label>
         <input
           type="text"
           id="title"
           placeholder="e.g. Take coffee break"
-          value={createdTask.title}
+          value={previousTaskState.title}
           name="title"
           onChange={handleChange}
+          required
         />
         <label htmlFor="desc">Description</label>
         <textarea
@@ -109,12 +113,12 @@ const TaskForm = () => {
           placeholder="e.g. It’s always good to take a break. This
 15 minute break will  recharge the batteries
 a little."
-          value={createdTask.description}
+          value={previousTaskState.description}
           onChange={handleChange}
           name="description"
         />
         <label htmlFor="subtasks">Subtasks</label>
-        {createdTask.subtasks?.map(({ id, title }) => (
+        {previousTaskState.subtasks?.map(({ id, title }) => (
           <FormGroupWrapper isDarkTheme={isDarkTheme} key={id} id={id}>
             <input
               type="text"
@@ -143,7 +147,7 @@ a little."
             </option>
           ))}
         </StyledSelect>
-        <SubmitBtn>Create Task</SubmitBtn>
+        <SubmitBtn>{isEdited ? "Save Changes" : "Create Task"}</SubmitBtn>
       </StyledForm>
     </>
   );

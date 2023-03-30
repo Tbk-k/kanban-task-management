@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { resetModals } from "../../reducers/modalsSlice";
+import { setPreviousTask } from "../../reducers/previousSlice";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -20,6 +21,7 @@ const Backdrop = () => {
     <Wrapper
       onClick={() => {
         dispatch(resetModals());
+        dispatch(setPreviousTask({ columnId: null, taskId: null }));
       }}
     />
   );

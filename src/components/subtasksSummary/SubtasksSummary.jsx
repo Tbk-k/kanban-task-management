@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { StyledSubtaskSummary } from "./SubtaskSummary.styles";
 
-const SubtasksSummary = ({ subtasks }) => {
+const SubtasksSummary = ({ subtasks, isPreview }) => {
   const [completed, setCompleted] = useState(0);
   useEffect(() => {
-    setCompleted(subtasks.filter((subtask) => subtask.completed).length);
+    setCompleted(subtasks?.filter((subtask) => subtask.completed).length);
   }, [subtasks]);
   return (
     <StyledSubtaskSummary>
-      <p>{`${completed} of ${subtasks.length} subtasks`}</p>
+      {isPreview ? (
+        <p
+          style={{ fontWeight: "bold" }}
+        >{`Subtasks (${completed} od ${subtasks.length})`}</p>
+      ) : (
+        <p>{`${completed} of ${subtasks.length} subtasks`}</p>
+      )}
     </StyledSubtaskSummary>
   );
 };

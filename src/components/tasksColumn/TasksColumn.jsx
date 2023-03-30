@@ -1,7 +1,8 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { setEditedTask } from "../../reducers/editSlice";
-import { toggleTaskForm } from "../../reducers/modalsSlice";
+import { toggleTaskPreview } from "../../reducers/modalsSlice";
+import { setPreviousTask } from "../../reducers/previousSlice";
+
 import TaskItem from "../taskItem/TaskItem";
 import { StyledTasksColumn } from "./TasksColumn.styles";
 
@@ -14,8 +15,8 @@ const TasksColumn = ({ ...props }) => {
       dataset: { columnId, taskId },
     } = e.target;
     if ((columnId, taskId)) {
-      dispatch(setEditedTask({ columnId, taskId }));
-      dispatch(toggleTaskForm());
+      dispatch(setPreviousTask({ columnId, taskId }));
+      dispatch(toggleTaskPreview());
     }
   };
 

@@ -15,9 +15,9 @@ const AddNewBoard = () => {
   const initialState = {
     title: "New Board",
     columns: [
-      { id: 0, title: "Todo" },
-      { id: 1, title: "Doing" },
-      { id: 2, title: "Done" },
+      { id: 0, title: "Todo", tasks: [] },
+      { id: 1, title: "Doing", tasks: [] },
+      { id: 2, title: "Done", tasks: [] },
     ],
   };
   const boards = useSelector((state) => state.taskBoards);
@@ -32,8 +32,6 @@ const AddNewBoard = () => {
   const handleChangeColumns = (e) => {
     const { id, value } = e.target;
     const columnId = parseInt(id);
-
-
 
     setData((prev) => ({
       ...prev,

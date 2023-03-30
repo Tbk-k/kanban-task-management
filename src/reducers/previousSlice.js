@@ -5,19 +5,19 @@ const initialState = {
   task: { columnId: null, taskId: null },
 };
 
-const editSlice = createSlice({
-  name: "edit",
+const previousSlice = createSlice({
+  name: "previous",
   initialState,
   reducers: {
-    setEditedBoard: (state, action) => {
+    setPreviousBoard: (state, action) => {
       state.board = action.payload;
     },
-    setEditedTask: (state, action) => {
+    setPreviousTask: (state, action) => {
       state.task = action.payload;
     },
   },
 });
 
-const { actions, reducer } = editSlice;
-export const { setEditedBoard, setEditedTask } = actions;
+const { actions, reducer } = previousSlice;
+export const { setPreviousBoard, setPreviousTask } = actions;
 export default reducer;

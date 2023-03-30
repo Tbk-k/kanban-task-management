@@ -4,6 +4,7 @@ export const GlobalStyle = createGlobalStyle`
 
 *{
     box-sizing: border-box;
+    transition: color .3s;
     &::-webkit-scrollbar{
         display: none;
     }

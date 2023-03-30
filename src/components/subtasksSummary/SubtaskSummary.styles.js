@@ -6,5 +6,6 @@ export const StyledSubtaskSummary = styled.div`
     font: ${({ theme }) => theme.fonts.body.m};
     margin: 0;
     color: ${({ theme }) => theme.colors.mediumGrey};
+    margin: 0 0 16px;
   }
 `;

@@ -4,9 +4,10 @@ import Backdrop from "../backdrop/Backdrop";
 import MobileMenu from "../mobileMenu/MobileMenu";
 import AddNewBoard from "../addNewBoard/AddNewBoard";
 import TaskForm from "../taskForm/TaskForm";
+import TaskPreview from "../taskPreview/TaskPreview";
 
 const Modals = () => {
-  const { boardMenu, addNewBoard, addNewTask } = useSelector(
+  const { boardMenu, addNewBoard, addNewTask, taskPreview } = useSelector(
     (state) => state.modalSlice
   );
 
@@ -29,6 +30,14 @@ const Modals = () => {
           <>
             <Backdrop />
             <TaskForm />
+          </>
+        )}
+      </>
+      <>
+        {taskPreview && (
+          <>
+            <Backdrop />
+            <TaskPreview />
           </>
         )}
       </>
