@@ -1,9 +1,9 @@
-import Reacts from "react";
+import React from "react";
 import { AddBoard, StyledMobileMenu } from "./MobileMenu.styles";
 import { TbLayoutBoardSplit } from "react-icons/tb";
 import ThemePicker from "../themePicker/ThemePicker";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleAddNewBoard, toggleBoardMenu } from "../../reducers/modalsSlice";
+import { toggleBoardForm, toggleBoardMenu } from "../../reducers/modalsSlice";
 import MenuItem from "./menuItem/MenuItem";
 
 const MobileMenu = () => {
@@ -13,7 +13,7 @@ const MobileMenu = () => {
 
   const handleAddNewBoard = () => {
     dispatch(toggleBoardMenu());
-    dispatch(toggleAddNewBoard());
+    dispatch(toggleBoardForm());
   };
 
   return (

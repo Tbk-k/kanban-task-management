@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  board: null,
+  board: { boardId: null },
   task: { columnId: null, taskId: null },
 };
 

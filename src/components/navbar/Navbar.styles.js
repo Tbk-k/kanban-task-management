@@ -12,6 +12,7 @@ export const StyledNavbar = styled.nav`
     display: flex;
     align-items: center;
     gap: 16px;
+    position: relative;
 
     &:first-of-type {
       svg {
@@ -25,10 +26,20 @@ export const StyledNavbar = styled.nav`
         gap: 8px;
         color: ${({ theme, isDarkTheme }) =>
           isDarkTheme ? theme.colors.white : theme.colors.black};
+        position: relative;
+        &::after {
+          content: "";
+          width: 100%;
+          height: 100%;
+          background-color: transparent;
+          position: absolute;
+        }
 
         svg {
           font-size: 10px;
           color: ${({ theme }) => theme.colors.purple};
+          transition: transform 0.3s;
+          transform: ${({ menuIsShown }) => menuIsShown && `rotate(180deg)`};
         }
       }
     }

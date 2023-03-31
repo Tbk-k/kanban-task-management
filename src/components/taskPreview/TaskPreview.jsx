@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SubtaskLabel, TaskPreviewWrapper } from "./TaskPreview.styles";
 import { FiMoreVertical } from "react-icons/fi";
 import SubtasksSummary from "../subtasksSummary/SubtasksSummary";
 import { handleSubtask } from "../../reducers/taskBoards";
 import EditDeleteMenu from "../editDeleteMenu/EditDeleteMenu";
-import { toggleEditDeleteMenu } from "../../reducers/modalsSlice";
 const TaskPreview = () => {
   const activeBoard = useSelector((state) => state.activeBoard);
   const { columnId, taskId } = useSelector((state) => state.previousSlice.task);
   const { title, description, subtasks } =
     activeBoard.columns[columnId].tasks[taskId];
   const { isDarkTheme } = useSelector((state) => state.themeSlice);
+  const [menuIsShown, setMenuState] = useState(false);
   const dispatch = useDispatch();
 
   const handleChange = (e, id) => {
@@ -26,7 +26,7 @@ const TaskPreview = () => {
   };
 
   const handleMenuState = () => {
-    dispatch(toggleEditDeleteMenu());
+    setMenuState((prev) => !prev);
   };
 
   return (
@@ -34,7 +34,10 @@ const TaskPreview = () => {
       <div>
         <h4>{title}</h4>
         <FiMoreVertical onClick={handleMenuState} />
-        <EditDeleteMenu />
+        <EditDeleteMenu
+          menuState={menuIsShown}
+          toggleMenuState={handleMenuState}
+        />
       </div>
       <p>{description}</p>
       <SubtasksSummary subtasks={subtasks} isPreview />

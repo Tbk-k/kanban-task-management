@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { produce } from "immer";
 
 const initialState = [
   {
@@ -69,8 +70,13 @@ const taskBoards = createSlice({
   name: "boards",
   initialState,
   reducers: {
-    addBoard: (state, action) => {
-      state.push(action.payload);
+    handleBoardForm: (state, action) => {
+      const { boardId, board } = action.payload;
+      if (boardId) {
+        state[boardId] = board;
+      } else {
+        state.push(board);
+      }
     },
     handleTaskForm: (state, action) => {
       const { boardId, columnId, task } = action.payload;
@@ -84,10 +90,23 @@ const taskBoards = createSlice({
         !state[boardId].columns[columnId].tasks[taskId].subtasks[subtaskId]
           .completed;
     },
+    handleDeletionBoard: (state, action) => {
+      console.log(state[0]);
+      const { boardId } = action.payload;
+      state = produce(state, (draftState) => {
+        delete draftState[boardId];
+      });
+      console.log(state[0], state[1]);
+    },
   },
 });
 
 const { actions, reducer } = taskBoards;
 
-export const { addBoard, handleTaskForm, handleSubtask } = actions;
+export const {
+  handleBoardForm,
+  handleTaskForm,
+  handleSubtask,
+  handleDeletionBoard,
+} = actions;
 export default reducer;

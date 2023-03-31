@@ -6,6 +6,7 @@ const initialState = {
   addNewTask: false,
   taskPreview: false,
   editDeleteMenu: false,
+  deletionWarning: false,
 };
 
 const modalSlice = createSlice({
@@ -15,7 +16,7 @@ const modalSlice = createSlice({
     toggleBoardMenu: (state) => {
       state.boardMenu = !state.boardMenu;
     },
-    toggleAddNewBoard: (state) => {
+    toggleBoardForm: (state) => {
       state.addNewBoard = !state.addNewBoard;
     },
     toggleTaskForm: (state) => {
@@ -24,8 +25,8 @@ const modalSlice = createSlice({
     toggleTaskPreview: (state) => {
       state.taskPreview = !state.taskPreview;
     },
-    toggleEditDeleteMenu: (state) => {
-      state.editDeleteMenu = !state.editDeleteMenu;
+    toggleDeletionWarning: (state) => {
+      state.deletionWarning = !state.deletionWarning;
     },
     resetModals: (state) => {
       return initialState;
@@ -36,10 +37,10 @@ const modalSlice = createSlice({
 const { actions, reducer } = modalSlice;
 export const {
   toggleBoardMenu,
-  toggleAddNewBoard,
+  toggleBoardForm,
   toggleTaskForm,
   toggleTaskPreview,
-  toggleEditDeleteMenu,
+  toggleDeletionWarning,
   resetModals,
 } = actions;
 export default reducer;

@@ -2,7 +2,8 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
-  toggleEditDeleteMenu,
+  toggleBoardForm,
+  toggleDeletionWarning,
   toggleTaskForm,
   toggleTaskPreview,
 } from "../../reducers/modalsSlice";
@@ -43,22 +44,36 @@ const StyledMenu = styled.menu`
   }
 `;
 
-const EditDeleteMenu = () => {
+const EditDeleteMenu = ({ menuState, toggleMenuState }) => {
   const { isDarkTheme } = useSelector((state) => state.themeSlice);
-  const menuState = useSelector((state) => state.modalSlice.editDeleteMenu);
-  const { taskId } = useSelector((state) => state.previousSlice.task);
+  const {
+    board: { boardId },
+    task: { taskId },
+  } = useSelector((state) => state.previousSlice);
   const dispatch = useDispatch();
-  const handleEditTask = () => {
+
+  const handleEdit = () => {
     if (taskId) {
       dispatch(toggleTaskForm());
       dispatch(toggleTaskPreview());
+    } else if (boardId) {
+      console.log(boardId);
+      dispatch(toggleBoardForm());
     }
-    dispatch(toggleEditDeleteMenu());
+    toggleMenuState();
   };
+
+  const handleDelete = () => {
+    if (taskId || boardId) {
+      dispatch(toggleDeletionWarning());
+    }
+    toggleMenuState();
+  };
+
   return (
     <StyledMenu isDarkTheme={isDarkTheme} menuState={menuState}>
-      <li onClick={handleEditTask}>Edit</li>
-      <li>Delete</li>
+      <li onClick={handleEdit}>Edit</li>
+      <li onClick={handleDelete}>Delete</li>
     </StyledMenu>
   );
 };

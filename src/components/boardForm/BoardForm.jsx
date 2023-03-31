@@ -7,33 +7,35 @@ import {
 } from "../../styles/FormTheme.styles";
 import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { addBoard } from "../../reducers/taskBoards";
+import { handleBoardForm } from "../../reducers/taskBoards";
 import { resetModals } from "../../reducers/modalsSlice";
 import { changeActiveBoard } from "../../reducers/activeBoard";
+import { setPreviousBoard } from "../../reducers/previousSlice";
 
-const AddNewBoard = () => {
+const BoardForm = () => {
+  const boards = useSelector((state) => state.taskBoards);
+  const { boardId } = useSelector((state) => state.previousSlice.board);
   const initialState = {
     title: "New Board",
+    id: boards.length,
     columns: [
       { id: 0, title: "Todo", tasks: [] },
       { id: 1, title: "Doing", tasks: [] },
       { id: 2, title: "Done", tasks: [] },
     ],
   };
-  const boards = useSelector((state) => state.taskBoards);
-  const editedBoard = null;
-  const [data, setData] = useState(editedBoard || initialState);
+  const [board, setBoard] = useState(boardId ? boards[boardId] : initialState);
   const dispatch = useDispatch();
 
   const handleChangeName = (e) => {
-    setData((prev) => ({ ...prev, title: e.target.value }));
+    setBoard((prev) => ({ ...prev, title: e.target.value }));
   };
 
   const handleChangeColumns = (e) => {
     const { id, value } = e.target;
     const columnId = parseInt(id);
 
-    setData((prev) => ({
+    setBoard((prev) => ({
       ...prev,
       columns: prev.columns.map((column) => {
         if (column.id === columnId) {
@@ -45,15 +47,15 @@ const AddNewBoard = () => {
   };
 
   const handleAddColumn = () => {
-    const newColumnId = data.columns.length;
-    setData((prev) => ({
+    const newColumnId = board.columns.length;
+    setBoard((prev) => ({
       ...prev,
       columns: [...prev.columns, { id: newColumnId, name: "" }],
     }));
   };
 
   const handleDeleteColumn = (columnId) => {
-    setData((prev) => ({
+    setBoard((prev) => ({
       ...prev,
       columns: prev.columns.filter((column) => column.id !== columnId),
     }));
@@ -61,28 +63,25 @@ const AddNewBoard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let newBoard = {
-      id: boards.length,
-      title: data.title,
-      columns: data.columns,
-    };
-    dispatch(addBoard(newBoard));
-    dispatch(changeActiveBoard(newBoard));
+    dispatch(handleBoardForm({ boardId, board }));
+    dispatch(changeActiveBoard(board));
+    dispatch(setPreviousBoard({ boardId: null }));
     dispatch(resetModals());
   };
+
   return (
     <StyledForm onSubmit={handleSubmit}>
-      <h4>Add New Board</h4>
+      <h4>{boardId ? "Edit Board" : "Add New Board"}</h4>
       <label htmlFor="name">Board Name</label>
       <input
         type="text"
         id="name"
         placeholder="e.g. Web Design"
-        value={data.title}
+        value={board.title}
         onChange={handleChangeName}
       />
       <label htmlFor="columns">Board Columns</label>
-      {data.columns.map(({ id, title }) => (
+      {board.columns.map(({ id, title }) => (
         <FormGroupWrapper key={id}>
           <input
             type="text"
@@ -97,8 +96,8 @@ const AddNewBoard = () => {
       <AddBtn type="button" onClick={handleAddColumn}>
         + Add New Column
       </AddBtn>
-      <SubmitBtn> Create New Board</SubmitBtn>
+      <SubmitBtn>{boardId ? "Save Changes" : "Create New Board"}</SubmitBtn>
     </StyledForm>
   );
 };
-export default AddNewBoard;
+export default BoardForm;
