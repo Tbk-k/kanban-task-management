@@ -2,21 +2,24 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Navbar from "./components/navbar/Navbar";
+import Sidebar from "./components/sidebar/Sidebar";
 import TaskList from "./components/tasksList/TasksList";
 import { changeActiveBoard } from "./reducers/activeBoard";
 
 const Wrapper = styled.main`
-  width: 100vw;
-  min-height: 100vh;
+  max-width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  background-color: ${({ theme, isDarkTheme }) =>
-    isDarkTheme ? theme.colors.veryDarkGrey : theme.colors.lightGrey};
 `;
 
 const InnerWrapper = styled.div`
+  display: flex;
   width: 100%;
+  overflow: hidden;
   height: 100%;
+  flex-direction: column;
+  background-color: ${({ theme, isDarkTheme }) =>
+    isDarkTheme ? theme.colors.veryDarkGrey : theme.colors.lightGrey};
 `;
 
 const App = () => {
@@ -42,8 +45,9 @@ const App = () => {
 
   return (
     <Wrapper isDarkTheme={isDarkTheme}>
-      <Navbar isEmptyBoard={isEmptyBoard} />
-      <InnerWrapper>
+      <Sidebar />
+      <InnerWrapper isDarkTheme={isDarkTheme}>
+        <Navbar isEmptyBoard={isEmptyBoard} />
         <TaskList isEmptyBoard={isEmptyBoard} />
       </InnerWrapper>
     </Wrapper>

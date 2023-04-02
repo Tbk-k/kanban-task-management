@@ -48,6 +48,7 @@ const Navbar = ({ isEmptyBoard }) => {
       </div>
       <div>
         <button onClick={handleAddNewTask}>
+          <p>+ Add New Task</p>
           <GoPlus />
         </button>
         <FiMoreVertical

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   boardMenu: false,
+  sidebar: false,
   addNewBoard: false,
   addNewTask: false,
   taskPreview: false,
@@ -16,6 +17,9 @@ const modalSlice = createSlice({
     toggleBoardMenu: (state) => {
       state.boardMenu = !state.boardMenu;
     },
+    toggleSidebar: (state) => {
+      state.sidebar = !state.sidebar;
+    },
     toggleBoardForm: (state) => {
       state.addNewBoard = !state.addNewBoard;
     },
@@ -29,7 +33,7 @@ const modalSlice = createSlice({
       state.deletionWarning = !state.deletionWarning;
     },
     resetModals: (state) => {
-      return initialState;
+      return { ...initialState, sidebar: state.sidebar };
     },
   },
 });
@@ -37,6 +41,7 @@ const modalSlice = createSlice({
 const { actions, reducer } = modalSlice;
 export const {
   toggleBoardMenu,
+  toggleSidebar,
   toggleBoardForm,
   toggleTaskForm,
   toggleTaskPreview,

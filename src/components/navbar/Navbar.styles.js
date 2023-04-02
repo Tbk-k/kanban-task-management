@@ -46,8 +46,6 @@ export const StyledNavbar = styled.nav`
 
     &:last-of-type {
       button {
-        width: 48px;
-        height: 32px;
         border-radius: 24px;
         border: none;
         cursor: pointer;
@@ -70,6 +68,16 @@ export const StyledNavbar = styled.nav`
           color: ${({ theme, isDarkTheme }) =>
             isDarkTheme ? theme.colors.white : theme.colors.darkGrey};
         }
+      }
+    }
+  }
+  @media screen and (min-width: 768px) {
+    div:first-of-type {
+      svg {
+        display: none;
+      }
+      h2 {
+        font: ${({ theme }) => theme.fonts.heading.xl};
       }
     }
   }
